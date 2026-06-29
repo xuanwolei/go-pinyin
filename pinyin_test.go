@@ -163,6 +163,46 @@ func TestPinyin(t *testing.T) {
 	testPinyin(t, hans, testData, Pinyin)
 }
 
+func TestPinyinDict(t *testing.T) {
+	defaultArgs := Args{Heteronym: true}
+	defaultResult := [][]string{{"hu", "xiao", "xu", "he", "xia"}}
+	if v := Pinyin("呼", defaultArgs); !reflect.DeepEqual(v, defaultResult) {
+		t.Errorf("Expected %s, got %s", defaultResult, v)
+	}
+
+	modernArgs := Args{Heteronym: true, Dict: ModernPinyinDict}
+	modernResult := [][]string{{"hu"}}
+	if v := Pinyin("呼", modernArgs); !reflect.DeepEqual(v, modernResult) {
+		t.Errorf("Expected %s, got %s", modernResult, v)
+	}
+
+	// 现代汉语字典过滤古籍读音，但仍保留人名常见多音字。
+	hans := "曾乐单仇区"
+	modernResult = [][]string{
+		{"ceng", "zeng"},
+		{"le", "yue"},
+		{"chan", "dan", "shan"},
+		{"chou", "qiu"},
+		{"ou", "qu"},
+	}
+	if v := Pinyin(hans, modernArgs); !reflect.DeepEqual(v, modernResult) {
+		t.Errorf("Expected %s, got %s", modernResult, v)
+	}
+}
+
+func TestPinyinCustomDict(t *testing.T) {
+	args := Args{
+		Heteronym: true,
+		Dict: Dict{
+			int('重'): "chóng",
+		},
+	}
+	result := [][]string{{"chong"}}
+	if v := Pinyin("重", args); !reflect.DeepEqual(v, result) {
+		t.Errorf("Expected %s, got %s", result, v)
+	}
+}
+
 func TestNoneHans(t *testing.T) {
 	s := "abc"
 	v := Pinyin(s, NewArgs())

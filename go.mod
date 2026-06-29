@@ -1,3 +1,3 @@
-module github.com/mozillazg/go-pinyin
+module github.com/xuanwolei/go-pinyin
 
 go 1.11

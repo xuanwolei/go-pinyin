@@ -7,7 +7,7 @@ Usage
 
 	import (
 		"fmt"
-		"github.com/mozillazg/go-pinyin"
+		"github.com/xuanwolei/go-pinyin"
 	)
 
 	func main() {

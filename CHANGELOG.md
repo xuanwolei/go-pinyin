@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.22.0] (2026-06-29)
+
+* **NEW** 新增 `Dict` 类型和 `Args.Dict`，支持调用方按业务场景选择拼音字典。
+* **NEW** 新增 `ModernPinyinDict`，使用现代汉语读音来源收窄多音字候选，减少古籍、通假和低频读音带来的搜索噪声。
+* **Changed** 模块路径调整为 `github.com/xuanwolei/go-pinyin`，README 和 CLI 子模块同步使用 fork 仓库地址。
+
+
 ## [0.21.0] (2025-07-19)
 
 * **Changed** 使用 [pinyin-data][pinyin-data] v0.15.0 的拼音数据。
@@ -235,6 +242,7 @@
 [#62]: https://github.com/mozillazg/go-pinyin/pull/62
 [#35]: https://github.com/mozillazg/go-pinyin/issues/35
 
+[0.22.0]: https://github.com/xuanwolei/go-pinyin/releases/tag/v0.22.0
 [0.1.1]: https://github.com/mozillazg/go-pinyin/compare/v0.1.0...v0.1.1
 [0.2.0]: https://github.com/mozillazg/go-pinyin/compare/v0.1.1...v0.2.0
 [0.2.1]: https://github.com/mozillazg/go-pinyin/compare/v0.2.0...v0.2.1

@@ -7,7 +7,7 @@ import (
 
 // Meta
 const (
-	Version   = "0.21.0"
+	Version   = "0.22.0"
 	Author    = "mozillazg, 闲耘"
 	License   = "MIT"
 	Copyright = "Copyright (c) 2016 mozillazg, 闲耘"
@@ -68,11 +68,15 @@ type Args struct {
 	Style     int    // 拼音风格（默认： Normal)
 	Heteronym bool   // 是否启用多音字模式（默认：禁用）
 	Separator string // Slug 中使用的分隔符（默认：-)
+	Dict      Dict   // 拼音字典（默认：PinyinDict）
 
 	// 处理没有拼音的字符（默认忽略没有拼音的字符）
 	// 函数返回的 slice 的长度为0 则表示忽略这个字符
 	Fallback func(r rune, a Args) []string
 }
+
+// Dict 表示拼音字典，key 为 Unicode 码点，value 为逗号分隔的带声调拼音。
+type Dict map[int]string
 
 // Style 默认配置：风格
 var Style = Normal
@@ -99,7 +103,12 @@ var reFinal2Exceptions = regexp.MustCompile("^(j|q|x)u(\\d?)$")
 
 // NewArgs 返回包含默认配置的 `Args`
 func NewArgs() Args {
-	return Args{Style, Heteronym, Separator, Fallback}
+	return Args{
+		Style:     Style,
+		Heteronym: Heteronym,
+		Separator: Separator,
+		Fallback:  Fallback,
+	}
 }
 
 // 获取单个拼音中的声母
@@ -215,7 +224,11 @@ func SinglePinyin(r rune, a Args) []string {
 	if a.Fallback == nil {
 		a.Fallback = Fallback
 	}
-	value, ok := PinyinDict[int(r)]
+	dict := a.Dict
+	if dict == nil {
+		dict = PinyinDict
+	}
+	value, ok := dict[int(r)]
 	pys := []string{}
 	if ok {
 		pys = strings.Split(value, ",")
