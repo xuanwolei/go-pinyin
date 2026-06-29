@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.23.0] (2026-06-29)
+
+* **NEW** 新增 `StandardPinyinDict`，使用 `kTGHZ2013.txt` 覆盖默认字典，进一步收窄姓名搜索中的极低频读音候选。
+* **Changed** 文档补充 `StandardPinyinDict` 的使用场景和字典来源。
+
+
 ## [0.22.0] (2026-06-29)
 
 * **NEW** 新增 `Dict` 类型和 `Args.Dict`，支持调用方按业务场景选择拼音字典。
@@ -242,6 +248,7 @@
 [#62]: https://github.com/mozillazg/go-pinyin/pull/62
 [#35]: https://github.com/mozillazg/go-pinyin/issues/35
 
+[0.23.0]: https://github.com/xuanwolei/go-pinyin/releases/tag/v0.23.0
 [0.22.0]: https://github.com/xuanwolei/go-pinyin/releases/tag/v0.22.0
 [0.1.1]: https://github.com/mozillazg/go-pinyin/compare/v0.1.0...v0.1.1
 [0.2.0]: https://github.com/mozillazg/go-pinyin/compare/v0.1.1...v0.2.0

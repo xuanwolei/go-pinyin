@@ -188,6 +188,25 @@ func TestPinyinDict(t *testing.T) {
 	if v := Pinyin(hans, modernArgs); !reflect.DeepEqual(v, modernResult) {
 		t.Errorf("Expected %s, got %s", modernResult, v)
 	}
+
+	standardArgs := Args{Heteronym: true, Dict: StandardPinyinDict}
+	standardResult := [][]string{{"ding"}, {"hu"}}
+	if v := Pinyin("丁呼", standardArgs); !reflect.DeepEqual(v, standardResult) {
+		t.Errorf("Expected %s, got %s", standardResult, v)
+	}
+
+	// 规范汉字字典进一步收窄极低频读音，同时保留常见姓名多音字。
+	hans = "曾乐单仇区"
+	standardResult = [][]string{
+		{"ceng", "zeng"},
+		{"le", "yue"},
+		{"chan", "dan", "shan"},
+		{"chou", "qiu"},
+		{"ou", "qu"},
+	}
+	if v := Pinyin(hans, standardArgs); !reflect.DeepEqual(v, standardResult) {
+		t.Errorf("Expected %s, got %s", standardResult, v)
+	}
 }
 
 func TestPinyinCustomDict(t *testing.T) {

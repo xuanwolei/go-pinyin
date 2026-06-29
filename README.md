@@ -27,6 +27,7 @@ What This Fork Solves
 * 支持通过 `Args.Dict` 选择拼音字典。
 * 保留默认 `PinyinDict`，兼容原项目行为。
 * 新增 `ModernPinyinDict`，使用现代汉语来源收窄多音字候选。
+* 新增 `StandardPinyinDict`，使用《通用规范汉字字典》来源进一步收窄极低频读音，适合姓名搜索等低噪声召回场景。
 * 支持调用方传入自定义 `pinyin.Dict`，便于按业务继续扩展字典。
 * 在现代字典中保留常见人名多音字，例如 `曾`、`乐`、`单`、`仇`、`区`。
 
@@ -105,12 +106,12 @@ func main() {
 	fmt.Println(pinyin.Pinyin(hans, a))
 	// [[zho1ng zho4ng] [guo2] [re2n]]
 
-	// 使用现代汉语字典，过滤古籍、通假等低频读音
+	// 使用规范汉字字典，过滤古籍、通假等低频读音
 	a = pinyin.NewArgs()
 	a.Heteronym = true
-	a.Dict = pinyin.ModernPinyinDict
-	fmt.Println(pinyin.Pinyin("呼曾乐", a))
-	// [[hu] [ceng zeng] [le yue]]
+	a.Dict = pinyin.StandardPinyinDict
+	fmt.Println(pinyin.Pinyin("丁呼曾乐", a))
+	// [[ding] [hu] [ceng zeng] [le yue]]
 
 	fmt.Println(pinyin.LazyPinyin(hans, pinyin.NewArgs()))
 	// [zhong guo ren]
@@ -131,7 +132,7 @@ func main() {
   以及不是所有拼音都有声母，如果这不是你预期的话，你可能需要的是首字母风格 `FirstLetter`
   （ [详细信息](https://github.com/mozillazg/python-pinyin#%E4%B8%BA%E4%BB%80%E4%B9%88%E6%B2%A1%E6%9C%89-y-w-yu-%E5%87%A0%E4%B8%AA%E5%A3%B0%E6%AF%8D) ）。
 * `Args.Dict` 为空时使用默认字典 `PinyinDict`；如需按业务场景收窄多音字候选，可以设置为
-  `ModernPinyinDict` 或调用方自定义的 `pinyin.Dict`。
+  `StandardPinyinDict`、`ModernPinyinDict` 或调用方自定义的 `pinyin.Dict`。
 
 
 Related Projects
@@ -148,6 +149,8 @@ pinyin data
 * `PinyinDict` 使用 [pinyin-data](https://github.com/mozillazg/pinyin-data) 的 `pinyin.txt` 数据，保持默认行为兼容。
 * `ModernPinyinDict` 以 `pinyin.txt` 为基础，并使用 `kXHC1983.txt` 和 `kTGHZ2013.txt` 的现代汉语读音覆盖对应字的候选读音。
   例如 `呼` 在默认字典中包含 `hū,xiāo,xū,hè,xià`，在现代汉语字典中只保留 `hū`。
+* `StandardPinyinDict` 以 `pinyin.txt` 为基础，并使用 `kTGHZ2013.txt` 的规范汉字读音覆盖对应字的候选读音。
+  例如 `丁` 在默认字典和现代汉语字典中包含 `dīng,zhēng`，在规范汉字字典中只保留 `dīng`。
 * 重新生成内置字典：
 
 ```
